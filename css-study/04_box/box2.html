@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./box2.css">
     <title>쇼핑몰</title>
 </head>
 <body>
-    <section>
-        <nav>
+    <section class="product-section">
+        <nav class="category-nav">
             <ul>
                 <li>카테고리1</li>
                 <li>카테고리2</li>
@@ -15,16 +16,43 @@
                 <li>카테고리4</li>
             </ul>
         </nav>
-        <ul>
+        <ul class="product-list">
             <!-- 
             li는 반복되고 있음 
             -> 하나를 정의해서 반복문 가능
             -> 컴포넌트라고 한다.
              -->
-            <li>상품1</li>
-            <li>상품2</li>
-            <li>상품3</li>
-            <li>상품4</li>
+            <li class="product-item">
+                <div class="product-img">상품이미지</div>
+                <div class="product-info">
+                    <div class="product-name">상품이름</div>
+                    <strong class="product-price">상품가격</strong>
+                </div>
+            </li>  
+
+            <li class="product-item">
+                <div class="product-img">상품이미지</div>
+                <div class="product-info">
+                    <div class="product-name">상품이름</div>
+                    <strong class="product-price">상품가격</strong>
+                </div>
+            </li>  
+
+            <li class="product-item">
+                <div class="product-img">상품이미지</div>
+                <div class="product-info">
+                    <div class="product-name">상품이름</div>
+                    <strong class="product-price">상품가격</strong>
+                </div>
+            </li> 
+
+            <li class="product-item">
+                <div class="product-img">상품이미지</div>
+                <div class="product-info">
+                    <div class="product-name">상품이름</div>
+                    <strong class="product-price">상품가격</strong>
+                </div>
+            </li>  
         </ul>
     </section>
 </body>
