@@ -26,13 +26,78 @@
             </div>
         </section>
         <section class="example">
-            <h2>flex-direction</h2>
-            <div class="container" style="flex-direction: row;">
+            <h2>justify-content</h2>
+            <!-- 
+            justify-content 속성(주축에 대해 정렬)
+            flex-start(기본값): 주축 시작점 정렬
+            center: 주축 중앙 정렬
+            flex-end: 주축 끝 정렬
+            space-between: 양끝 고정 + 중간 동일 간격
+            space-around: 좌우로 나란히
+            space-evenly: 모든 가격을 완전히 동일하게
+            -->
+            <div class="container" style="justify-content: space-between;">
+                <div class="item">A</div>
+                <div class="item">B</div>
+                <div class="item">C</div>
+            </div>
+        </section>
+        <section class="example">
+            <h2>align-items</h2>
+            <!-- 
+            align-items 속성(교차축 정렬)
+            flex-start: 시작 정렬(윗쪽)
+            flex-end: 끝 정렬(아래)
+            center: 중앙정렬
+            ---
+            baseline: 글자 기준선에 맞춰 정렬
+            ---
+            -->
+            <div class="container" style="align-items: center;">
+                <div class="item" style="height: 120px;">큰</div>
+                <div class="item">중간</div>
+                <div class="item" style="height: 50px;">작은</div>
+            </div>
+        </section>       
+        <section class="example">
+            <h2>flex-wrap</h2>
+            <!-- 
+            flex-wrap: 줄 바꿈 - flex안에 있는 요소들이 넘칠 때
+            nowrap(기본값): 줄바꿈 x, 넘칠 경우 내부요소가 줄어듦
+            wrap: 공간이 부족하면 줄바꿈
+            ---
+            wrap-reverse: 줄바꿈 + 위아래 반전
+            gap: 아이템 사이 간격 px
+            -->
+            <div class="container" style="width: 400px; flex-wrap: wrap; gap: 10px;">
                 <div class="item">1</div>
                 <div class="item">2</div>
                 <div class="item">3</div>
+                <div class="item">4</div>
+                <div class="item">5</div>
+                <div class="item">6</div>
             </div>
-        </section>
+        </section>       
+        <section class="example">
+            <h2>flex-grow</h2>
+            <!-- 
+            grow: flex 요소들의 여유 공간분배 비율지정
+            - 0(기본값): 여유 공간을 차지 x, 지정된 크기만큼만
+            - 1, 2, 3...: 숫자 비율대로 여유 공간 분배
+            ex) 요소중에 혼자 flex-grow:1일 경우, 여유 공간 독점
+            -->
+            <div class="container">
+                <div class="item" style="flex-grow: 1;">grow1</div>
+                <div class="item" style="flex-grow: 3;">grow2</div>
+                <div class="item" style="flex-grow: 1;">grow3</div>
+            </div>
+        </section>       
     </main>
+    <!--
+    중앙정렬 하는 방법
+    1. margin 위아래 + auto
+    2. flex + align-items + justify-content -> 요소가 여러개일 때
+    -->
+
 </body>
 </html>
