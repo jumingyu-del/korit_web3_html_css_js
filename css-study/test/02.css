@@ -42,6 +42,47 @@
     cursor: pointer;
 }
 
+.has-sub {
+    /* 
+    sub-menu들을 기존 요소 상호작용에서 빼내어야함
+    -> position: absoulute를 주자
+    */
+    position: relative;
+}
+
+.sub-menu {
+    /* 부모 메뉴 바로 아래에 위치 */
+    position: absolute;
+    top: 100%;
+    left: 0;
+
+    background-color: #292929;
+    width: 150px;
+    padding: 10px 0;
+
+    /* 요소를 숨겨보자 */
+    /* 불투명도로 모양을 없애고, 상호작용을 막자 */
+    opacity: 0;
+    pointer-events: none;
+
+    transition: opacity 0.25s ease-in-out;
+}
+
+.sub-menu li {
+    padding: 8px 16px;
+}
+
+.sub-menu li:hover {
+    background-color: #393939;
+}
+
+.has-sub:hover .sub-menu {
+    /* 보이도록 */
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* 알림 박스 */
 .notice {
     /* 하위자식이 absolute면 relative */
     position: relative;
