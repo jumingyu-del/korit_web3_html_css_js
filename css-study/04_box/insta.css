@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 .wrapper {
@@ -66,7 +67,60 @@
 }
 
 /* divider, or-box -> 가상선택자(::after, ::before) */
+.or-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: #777;
+    cursor: default;
+}
 
+/* 좌우 선 */
+.or-text::after,
+.or-text::before {
+    content: "";
+    /* 남은 여백 분배 비율 */
+    flex-grow: 1;
+    /* 
+    width는 여백 전체 & height 1px주고, 배경색으로 직선 표현
+    */
+    height: 1px;
+    background-color: #dbdbdb;
+}
+
+.sub-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+}
+
+.facebook-login {
+    color: #385185;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.forgot {
+    color: #00376b;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* 회원가입 */
 .signup-box {
     width: 350px;
+    padding: 20px;
+    border: 1px solid#ddd; 
+    text-align: center;
+    cursor: default;
+    font-size: 12px;
+}
+
+.signup-link {
+    color: #0095f6;
+    /* 강조해야하는 부분에 굵게 */
+    font-weight: 700;
+    cursor: pointer;
 }
