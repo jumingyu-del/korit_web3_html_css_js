@@ -65,3 +65,21 @@ console.log(!![], !!"0", !!"false");
 if([]) {
     console.log("실행됩니다")
 }
+
+// 논리연산자
+// 모든 값은 boolean 가능
+
+// A를 실행하고, 결과가 truthy면, B를 실행한다.
+// A && B
+
+const isLogin = true;
+// 간단한 if문 처럼 사용 가능
+isLogin && console.log("로그인 상태입니다.")
+!isLogin && console.log("로그아웃 상태입니다.")
+
+// A || B
+// 기본값 처리
+let page;
+
+page = page || 1;
+console.log(page);
