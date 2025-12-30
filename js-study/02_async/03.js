@@ -18,7 +18,7 @@ const asyncFunc = (resolve, reject) => {
 };
 
 // 비동기 함수를 Promise 객체로 변환
-// const promise1 = new Promise(asyncFunc);
+const promise1 = new Promise(asyncFunc);
 
 // Promise 객체가 가지고 있는
 // then함수, catch함수로 성공/실패 분기
@@ -36,6 +36,7 @@ promise1.then((result) => {
 // 02.js에 있던 a, b, c 함수 -> promise로 변환
 
 const a = (value) => {
+    // new Promise()로 promise 객체가 생성되는 순간, 내부의 함수는 실행된다.
     console.log("a 호출");
     const promiseA = new Promise((resolve) => {
         setTimeout(() => {
@@ -65,15 +66,24 @@ const c = (value) => {
     return promiseC;
 }
 
+const resultOfA = a(10);
+console.log(resultOfA);
+
 // promise 객체 리턴
-a(10).then((resultA) => {
-    console.log(`a결과: ${resultA}`);
-    return b(resultA);
-})
-.then((resultB) => {
-    console.log(`b결과: ${resultB}`);
-    return c(resultB);
-})
-.then((resultC) => {
-    console.log(`c결과: ${resultC}`)
-})
+a(10) // then -> promiseA의 상태가 fullfilled가 되었을 때 실행
+    .then((resultA) => {
+        console.log(`a결과: ${resultA}`);
+        return b(resultA);
+    })
+    .then((resultB) => {
+        console.log(`b결과: ${resultB}`);
+        return c(resultB);
+    })
+    .then((resultC) => {
+        console.log(`c결과: ${resultC}`);
+    })
+    .catch((error) => {
+        console.log(`에러: ${error}`);
+    })
+
+// Promise 체이닝
