@@ -9,14 +9,88 @@
     <h1>로그인</h1>
     <div>
         <input type="text" id="username" placeholder="아이디" />
-        <button>중복체크</button>
+        <button class="checkBtn">중복체크</button>
     </div>
     <div>
         <input type="password" id="password" placeholder="비밀번호" />
     </div>
-    <button>로그인</button>
+    <button class="loginBtn">로그인</button>
 </body>
 <script>
+    const users = [
+        {username: "admin", password: "1234"},
+        {username: "user1", password: "1234"},
+        {username: "user2", password: "1234"},
+        {username: "user3", password: "1234"}
+    ]
+    // id와 pw를 입력하고, 로그인버튼을 누르면
+    // 내가 입력한 id와 pw를 alert()로 출력
+    const usernameInput = document.querySelector("#username");
+    const passwordInput = document.querySelector("#password");
+    const loginBtn = document.querySelector(".loginBtn");
+    
+    loginBtn.addEventListener("click", () => {
+        const myUsername = usernameInput.value;
+        const myPassword = passwordInput.value;
+        // 비교
+        let isLoginSuccess = false;
+        
+        // 순회하면서 대조
+        for(let user of users) {
+            // const username = users.username;
+            // const password = users.password;
+            const {username, password} = user;
+            const isSameId = myUsername === username;
+            const isSamePw = myPassword === password;
+            if(isSameId && isSamePw) {
+                isLoginSuccess = true;
+                break;
+            }
+        }
+        
+        // find() 쓰는 방법
+        // return 값이 true인 객체가 있는지 검사
+        isLoginSuccess = users.find((user) => {
+            const {username, password} = user;
+            const isSameId = myUsername === username;
+            const isSamePw = myPassword === password;
+            return isSameId && isSamePw;
+        });
+        
+        if(isLoginSuccess) {
+            alert("로그인 성공");
+        } else {
+            alert("로그인 실패")
+        }
+    });
+    
+    // id와 pw를 입력받고
+    // 해당 데이터가 users 배열에 있는 객체데이터와 일치할 경우
+    // alert("로그인 성공"), 일치하지 않을 경우 alert("로그인 실패")
+    
+    const checkBtn = document.querySelector(".checkBtn");
+    // users에 있는 user들의 username과 중복이면 alert("중복입니다.")
+    // 중복이 아니면 alert("사용할 수 있습니다.")
+    checkBtn.addEventListener("click", () => {
+        const myUsername = usernameInput.value;
+        let isDuplicated = false;
+        
+        for(let user of users) {
+            const {username} = user;
+            if(myUsername === username) {
+                isDuplicated = true;
+                break;
+            }
+        }
+
+        if(isDuplicated) {
+            alert("이미 사용중인 아이디입니다.");
+        } else {
+            alert("사용가능한 아이디입니다.");
+        }
+ 
+
+    })
     
 </script>
 </html>
