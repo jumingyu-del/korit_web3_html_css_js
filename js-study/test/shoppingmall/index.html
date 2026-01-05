@@ -59,43 +59,99 @@
 
         // 동기적으로 렌더링()
         renderProducts(productDataList);
-    }
+    };
 
     // productDataList 데이터들을 기반으로 렌더링하는 함수
     const renderProducts = (productDataList) => {
         // 기존에 있던 HTML을 삭제(중복 렌더링 방지)
         productList.innerHTML = "";
         
-        const myHtml = "";
+        let myHtml = "";
         // 상품 하나당 카드 하나 만들어서 붙혀줌
-        for(let product of producDatatList) {
-            const cardHTML = createProductCardHTML(product);
-            myHtml += cardHTML;
+        for(let product of productDataList) {
+            const cardHtml = createProductCardHTML(product);
+            myHtml += cardHtml;
         }
 
         productList.innerHTML = myHtml;
         
-    }
-
+    };
 
     // HTML 조립하는 함수
     const createProductCardHTML = (product) => {
-        const {image, tittle, price, id} = product;
+        const {image, title, price, id} = product;
         // 버튼을 누르면, product의 id를 추출할 수 있게
         // 전역에 있는 productDataList에서 id로 해당 상품을 특정해서
         // localStorage에 담아줄겁니다.
         const html = `
             <div class="product-card">
                 <div class="image-box">
-                    <img src="${image}" alt="${tittle}" />    
+                    <img src="${image}" alt="${title}" />    
                 </div>
-                <h3 class="title">${tittle}</h3>
-                <p class="price">${price}</p>
-                <button data-id="${id}">상품담기</button>    
+                <h3 class="title">${title}</h3>
+                <p class="price">$${price}</p>
+                <button data-productId="${id}">상품담기</button>    
             </div>
         `;
         return html;
     }
+
+    // productList 안에 card들을 만들어 줬음
+    // card 안에 버튼에서 이벤트가 생성 -> 전파.. -> productList에서 감지
+    productList.addEventListener("click", (e) => {
+        // 버튼이 아니면 바로 리턴
+        const target = e.target;
+        if(target.tagName !== "BUTTON") {
+            return;
+        };
+        // 클릭한 버튼의 data-productId를 가져와야 함
+        let productId = e.target.dataset.productId;   
+        productId = parseInt(productId); // 문자열 -> 숫자
+
+        // id로 productDataList에서 상품을 특정해서 가져옴(js 객체)
+        // let selectedProduct = {};
+        // for(let product of productDataList) {
+        //     if(product.id === productId) {
+        //         selectedProduct = product;
+        //         break;
+        //     }
+        // }
+
+        let selectedProduct = productDataList.find((product) => {
+            return product.id === productId;
+        });
+
+        // 최초면, localStorage에 아무것도 없음
+        const savedCart = localStorage.getItem("cart");
+
+        // 최초면 falsy, 최초가 아니면 truthy
+        // 값 ? truthy일 때 값 : falsy일 때 값
+        const cart = savedCart ? JSON.parse(savedCart) : [];
+        
+        // localStorage에 이미 상품이 존재한다면? 수량 증가
+        // 없다면 새로 추가 -> cart에 해당 id의 상품이 있는지?
+        const existingItem = cart.find((product) => {
+            return product.id === selectedProduct.id;
+        });
+
+        if(existingItem) { // cart에 이미 있다면
+            existingItem.count += 1;
+        } else { // 없다면 새로 push
+            const {id, title, price, image} = selectedProduct;
+            const newItem = {
+                id: id,
+                title: title,
+                price: price,
+                image: image,
+                count: 1
+            }
+            cart.push(newItem);
+        }
+
+        // 로컬스토리지에 저장
+        const savingData = JSON.stringify(cart);
+        localStorage.setItem("cart", savingData);
+    });
 
     loadProducts();
     

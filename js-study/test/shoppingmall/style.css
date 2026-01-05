@@ -52,3 +52,59 @@
 .hidden {
     display: none;
 }
+
+main {
+    width: 100%;
+}
+
+.product-list {
+    margin-top: 70px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    gap: 20px;
+    padding: 20px;
+}
+
+.product-card {
+    width: 200px;
+    border: 1px solid #ccc;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-between;
+}
+
+.product-card h3 {
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.title {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.price {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.product-card button {
+    width: 100%;
+    padding: 4px;
+    cursor: pointer;
+}
+
+.image-box {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+}
+
+.image-box img {
+    width: 100%;
+    height: 100%;
+}
