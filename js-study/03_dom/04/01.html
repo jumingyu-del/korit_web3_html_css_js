@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input id="test" type="text">
+    <button id="save">저장</button>
+    <button id="load">불러오기</button>
+    <div id="save-data"></div>
+</body>
+<script>
+    const input = document.querySelector("#test");
+    const saveBtn = document.querySelector("#save");
+    const loadBtn = document.querySelector("#load");
+    const saveDataDiv = document.querySelector("#save-data");
+
+    // saveBtn이 클릭 되면
+    saveBtn.addEventListener("click", () => {
+        const value = input.value;
+        // 로컬스토리지에 JS 객체 or 리스트를 저장
+        // -> JSON화 하여서 저장
+        const myData = {
+            value: value,
+            user: "admin"
+        }
+        // JSON.stringify(데이터) -> 데이터를 JSON화 해줌
+        const jsonMyData = JSON.stringify(myData);
+        localStorage.setItem("myData", jsonMyData);
+        alert("저장완료")
+        input.value = "";
+    });
+
+    // loadBtn이 클릭 되면
+    loadBtn.addEventListener("click", () => {
+        const josnValue = localStorage.getItem("myData");
+        // JSON.parse(데이터) -> js 객체, js리스트
+        const value = JSON.parse(josnValue);
+
+        saveDataDiv.innerText = `
+            저장한 값: ${value.value}
+            작성자: ${value.user}
+        `;
+    });
+
+</script>
+</html>

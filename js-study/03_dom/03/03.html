@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input {
+            margin-bottom: 5px;
+            padding: 6px;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+        .success {
+            color: green;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>회원가입</h1>
+    <div>
+        <input type="text" id="username" placeholder="아이디">
+        <span id="username-msg"></span>
+    </div>
+    <div>
+        <input type="password" id="password" placeholder="비밀번호">
+        <span id="password-msg"></span>
+    </div>
+    <div>
+        <input type="text" id="email" placeholder="이메일">
+        <span id="email-msg"></span>
+    </div>
+    <button id="submit">가입</button>
+</body>
+<script>
+    // [input, input, input]
+    const inputs = document.querySelectorAll("input");
+    // 반복을 돌면서 이벤트 리스너 장착
+    inputs.forEach((input, idx) => {
+        // keydown 이벤트: 키보드 키가 눌리는 이벤트
+        input.addEventListener("keydown", (e) => {
+            const key = e.key;
+            console.log(`${idx}번 인풋에 키감지 됨`)
+            if(key === "Enter") {
+                // 현재 input 다음 input에 포커스
+                e.preventDefault();
+                inputs[idx + 1]?.focus();
+            }
+
+            if (key === "Tab") {
+                // 브라우저에서 Tab키가 작동하는 기본 동작 제거
+                // 제거
+                e.preventDefault();
+                inputs[idx -1]?.focus();
+            }
+
+        })
+    })
+
+    const submitBtn = document.querySelector("#submit");
+    const emailInput = document.querySelector("#email");
+    // 이메일 input에서 Enter를 누르면
+    // 가입버튼이 focus()되게 해주세요
+    emailInput.addEventListener("keydown", (e) => {
+        const key = e.key;
+        if(key === "Enter") {
+            submitBtn.focus();
+        }
+    });
+
+    const inputRules = {
+        username: {
+            validate: (value) => value.length >= 4,
+            success: "사용가능한 아이디입니다.",
+            error: "아이디는 4글자 이상이어야 합니다."
+        },
+        password: {
+            validate: (value) => value.length >= 6,
+            success: "사용가능한 패스워드입니다.",
+            error: "패스워드는 6글자 이상이어야 합니다."
+        },
+        email: {
+            validate: (value) => value.includes("@"),
+            success: "사용가능한 이메일 형식입니다.",
+            error: "이메일 형식이 아닙니다."
+        }
+    }
+
+    for(let input of inputs) {
+        input.addEventListener("change", (e) => {
+            const target = e.target;
+            const {id, value} = target;
+            // 첫 반복 id = "username"
+            const rule = inputRules[id];
+            const {validate, success, error} = rule;
+            
+            const msgSpan = document.querySelector(`#${id}-msg`);
+            const isValid = validate(value);
+            
+            msgSpan.innerText = isValid ? success : error;
+            msgSpan.className = isValid ? "success" : "error";
+        });
+    }
+    
+    submitBtn.addEventListener("click", () => {
+        // 제출버튼 클릭시
+        // 3개의 input 중 하나라도 error면
+        // -> span 태그중에 error 클래스를 가진 애가 있다면
+        // alert("입력값을 확인하세요")
+        // 모두 success면
+        // alert("회원가입 성공")
+
+        // const isErrorExcite = false;
+        // for (let input of inputs) {
+        //     const {validate, success, error} = inputRules[input.id];
+        //     if(!validate(input.value)) {
+        //         isErrorExcite = true;
+        //         break;
+        //     }
+        // }
+        // if(isErrorExcite) {
+        //     alert("입력값을 확인하세요")
+        // } else {
+        //     alert("회원가입 성공")
+        // }
+
+        const errorMsg = document.querySelector(".error");
+        if (errorMsg) {
+            // errorMsg가 truthy 값으로 존재한다면
+            // -> 하나라도 error 클래스가 있다면
+            alert("입력값을 확인하세요!");
+            // error 클래스를 가진 태그 이전 형제태그
+            errorMsg.previousElementSibling,focus();
+            return
+        }
+        alert("회원가입 성공");
+    });
+
+</script>
+</html>

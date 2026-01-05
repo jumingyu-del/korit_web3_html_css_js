@@ -90,6 +90,22 @@
         }
     });
 
+    // 아이디 input 검증
+    const usernameInput = document.querySelector("#username");
+    usernameInput.addEventListener("change", (e) => {
+        // 아이디는 4글자 이상인지 확인
+        const msg = document.querySelector("#username-msg");
+        const target = e.target;
+        const inputValue = target.value;
+        if(inputValue.length < 4) {
+            msg.innerText = "아이디는 4자 이상이어야 합니다."
+            msg.className = "error"
+        } else {
+            msg.innerText = "사용가능한 아이디입니다."
+            msg.className = "success"
+        }
+    })
+
 
 </script>
 </html>

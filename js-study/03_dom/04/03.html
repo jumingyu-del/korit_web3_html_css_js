@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>상품목록</h1>
+    <ul class="product-list"></ul>
+
+    <h2>장바구니</h2>
+    <button class="save-btn">주문 저장</button>
+    <button class="load-btn">주문 불러오기</button>
+    <ul class="cart-list"></ul>
+</body>
+<script>
+    // 전역변수
+    let cart = [];
+    const products = [
+        {name: "아이스 아메리카노", price: 2000},
+        {name: "바닐라 라떼", price: 3500},
+        {name: "초코 라떼", price: 4000}
+    ];
+
+    // 상품 렌더함수
+    const productUl = document.querySelector(".product-list");
+    const productRender = () => {
+        let myHtml = "";
+
+        // 상품이름 ~원
+        // 수량을 선택할 수 있는 input(type = number)
+        // 주문버튼
+        let idx = 0;
+        for (let product of products) {
+            myHtml += `
+                <li>
+                    ${product.name} - ${product.price}원
+                    <input id="qty-${idx}" type="number">
+                    <button id="order-${idx}"">주문버튼</button>
+                </li>
+            `;
+            idx++;
+        }
+        productUl.innerHTML = myHtml;
+    }
+    // 요소들
+    const cartUl = document.querySelector(".cart-list");
+    const saveBtn = document.querySelector(".save-btn");
+    const loadBtn = document.querySelector(".load-btn");
+
+
+    // 주문 버튼 클릭
+    productUl.addEventListener("click", (e) => {
+        const target = e.target;
+        const id = target.id;
+        if(!id.startsWith("order")) {
+            return;
+        }
+        // id -> product의 index 추출
+        let idx = id.replace("order-", "");
+        idx = parseInt(idx);
+
+        // 수량 input
+        const qtyInput = document.querySelector(`#qty-${idx}`);
+        let qty = qtyInput.value;
+        qty = parseInt(qty);
+
+        const product = products[idx];
+
+        // 주문내역을 cart에 저장
+
+        // 만약에 기존 cart에 상품이 있었다면, qty 누적합
+        const item = cart.find((item) => {
+            return item.name === product.name;
+        });
+
+        if(item) { // truthy일 때 -> qty 누적합
+            // cart안에 있는 item의 수량을 바꿔줘야 함
+            cart = cart.map((item) => {
+                // 주문한 상품이름(product.name)과 카트에서 꺼내온 이름이 같다면
+                if(item.name === product.name) {
+                    return { // 기존값은 그대로 쓰고, 수량만 누적
+                        ...item,
+                        quantity: item.quantity + qty
+                    }
+                }
+                // 아니라면 그대로
+                return item;
+            })
+
+        } else { // falsy일 때 -> 새로 추가
+            // 없다면 새로 추가
+            cart.push({
+                name: product.name,
+                price: product.price,
+                quantity: qty
+            });
+        }
+
+        renderCart();
+    });
+
+    // 장바구니의 값이 바뀌면 호출되어야 함
+    const renderCart = () => {
+        let myHtml = "";
+        // cart
+        // <li>상품이름 - ~개 - 총가격</li>
+        for(let item of cart) {
+            const {name, quantity, price} = item;
+            myHtml += `
+                <li>
+                    <p>${name} - ${quantity}개</p>
+                    <div>총 가격: ${price * quantity}원</div>
+                </li>
+            `
+        }
+
+        cartUl.innerHTML = myHtml;
+    }
+
+    // localStorage 저장
+    saveBtn.addEventListener("click", () => {
+        // js객체 -> json 변환(string)
+        const jsonCart = JSON.stringify(cart);
+        localStorage.setItem("cart", jsonCart);
+        
+        alert("저장되었습니다.");
+        cartUl.innerHTML = "";
+    })
+
+    // localStorage 불러오기
+    loadBtn.addEventListener("click", () => {
+        const jsonCart = localStorage.getItem("cart");
+        if(!jsonCart) { // 저장한게 없다면
+            alert("저장된 데이터가 존재하지 않습니다.");
+            return;
+        }
+        // 전역 cart 변수에 대입
+        cart = JSON.parse(jsonCart);
+        renderCart();
+    });
+
+    productRender();
+    
+</script>
+</html>
