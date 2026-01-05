@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">ShoppingMall</div>
+            <div class="menu-area">
+                <ul class="menu">
+                    <li>TOP</li>
+                    <li>OUTER</li>
+                    <li>BOTTOM</li>
+                    <li>ACC</li>
+                </ul>
+            </div>
+            <!-- cart를 누르면 장바구니 모달이 열림 -->
+            <div class="cart">장바구니</div>
+        </nav>
+    </header>
+    <main>
+        <!-- 상품카드들이 렌더링(js로) -->
+        <section class="product-list"></section>
+    </main>
+    <div class="modal-overlay hidden">
+        <div class="cart-modal">
+            <div class="modal-header">
+                <h2>장바구니</h2>
+                <button class="close-btn">X</button>
+            </div>
+            <ul>
+                <!-- localStorage에 있는 데이터로 렌더링 -->
+            </ul>
+            <div class="modal-footer">
+                <button class="close-btn">닫기</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // dom 요소들 
+    const productList = document.querySelector(".product-list");
+
+    // 전역 변수
+    let productDataList = [];
+    const BASE_URL = "https://fakestoreapi.com/products";
+
+    // fetch로 데이터들을 productDataList에 담는 함수
+    const loadProducts = async () => {
+        const response = await fetch(BASE_URL);
+        const result = await response.json();
+        
+        // 받아온 데이터를 상태변수에 저장
+        productDataList = result;
+
+        // 동기적으로 렌더링()
+        renderProducts(productDataList);
+    }
+
+    // productDataList 데이터들을 기반으로 렌더링하는 함수
+    const renderProducts = (productDataList) => {
+        // 기존에 있던 HTML을 삭제(중복 렌더링 방지)
+        productList.innerHTML = "";
+        
+        const myHtml = "";
+        // 상품 하나당 카드 하나 만들어서 붙혀줌
+        for(let product of producDatatList) {
+            const cardHTML = createProductCardHTML(product);
+            myHtml += cardHTML;
+        }
+
+        productList.innerHTML = myHtml;
+        
+    }
+
+
+    // HTML 조립하는 함수
+    const createProductCardHTML = (product) => {
+        const {image, tittle, price, id} = product;
+        // 버튼을 누르면, product의 id를 추출할 수 있게
+        // 전역에 있는 productDataList에서 id로 해당 상품을 특정해서
+        // localStorage에 담아줄겁니다.
+        const html = `
+            <div class="product-card">
+                <div class="image-box">
+                    <img src="${image}" alt="${tittle}" />    
+                </div>
+                <h3 class="title">${tittle}</h3>
+                <p class="price">${price}</p>
+                <button data-id="${id}">상품담기</button>    
+            </div>
+        `;
+        return html;
+    }
+
+    loadProducts();
+    
+
+</script>
+</html>
