@@ -239,7 +239,69 @@
             return;
         }
         console.log(clickItemId);
-    })
+
+        // 로컬스토리지에서 데이터를 가져와서
+        let savedData = localStorage.getItem("cart");
+        if(!savedData) {
+            savedData = [];
+        } else {
+            savedData = JSON.parse(savedData);
+        }
+        // 해당 id의 상품을 특정 - js객체
+        const targetItem = savedData.find((item) => {
+            return item.id === clickItemId;
+        });
+
+        if(!targetItem) {
+            return;
+        }
+        
+        // plus클래스 -> 객체.count + 1
+        const isPlus = target.classList.contains("plus");
+        if(isPlus) {
+            targetItem.count += 1;
+        };
+
+        // minus클래스 -> 객체.count - 1
+        const isMinus = target.classList.contains("minus");
+        // count가 1 아래로  떨어지면 x
+        if(isMinus) {
+            targetItem.count += -1;
+            if(targetItem.count <= 0) {
+                targetItem.count = 1;
+            }
+        };
+
+        // delete-btn -> cart에서 해당객체를 삭제
+        const isDelete = target.classList.contains("delete-btn");
+
+        if(isDelete) {
+            // 삭제하시겠습니까? confirm()
+            const agree = confirm("삭제하시겠습니까?");
+            if (!agree) {
+                return;
+            }
+            // savedData에서 targetItem의 index를 찾아서 - indexOf()
+            let targetIdx = -1;
+            for(let i = 0; i < savedData.length; i++) {
+                if(savedData[i] === targetItem) {
+                    targetIdx =i;
+                }
+            }
+            targetIdx = savedData.indexOf(targetItem);
+            // splice로 삭제
+            savedData.splice(targetIdx, 1);
+        };
+
+        // 로컬스토리지에 다시 저장
+        // js객체 -> JOSN string변환
+        const updateData = JSON.stringify(savedData);
+        localStorage.setItem("cart", updateData);
+
+        // 렌더링()
+        renderCart();
+        
+    });
 
     loadProducts();
     
